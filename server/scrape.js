@@ -13,11 +13,15 @@ var allReddit = [];
 var allMDN = []
 var allHackerString = '';
 var allRedditString = '';
+var allMdnString = '';
 var javascriptReddit;
 var javascriptHacker;
 
 // write headers to csv
 writeStream.write('Title,' + 'URL' + '\n');
+
+var redditR = getReddit();
+
 
 // perfrom request
 request('https://news.ycombinator.com', function (error, response, html) {
@@ -38,19 +42,11 @@ request('https://news.ycombinator.com', function (error, response, html) {
 
       // data store in an object (for dumping to mongo)
       scrapedHacker = title;
-
-      allHacker.push(scrapedHacker);
-      allHackerString = allHacker.join();
-      //console.log(scrapedData);
-
-
     });
-    javascriptHacker = allHackerString.match(/javascript/g);
+    javascriptHacker = scrapedHacker.match(/javascript/g);
     // console.log(allHackerString);
     console.log("\nDONE! hacker\n")
   }
-  console.log(allHackerString);
-  console.log(javascriptHacker);
 });
 
 request('https://www.reddit.com/r/Web_Development/', function (error, response, html) {
@@ -72,20 +68,14 @@ request('https://www.reddit.com/r/Web_Development/', function (error, response, 
 
         // data store in an object (for dumping to mongo)
         scrapedReddit = title;
-        allReddit.push(scrapedReddit);
-        allRedditString = allReddit.join();
-        //console.log(scrapedData);
-        // javascriptHacker = allRedditString.match('/javascript/g');
 
       });
-      javascriptReddit = allRedditString.match('/javascript/g');
+      javascriptReddit = scrapedReddit.match('/javascript/g');
 
 
     console.log("\nDONE! reddit\n");
     // console.log(allReddit);
   }
-  console.log(allRedditString)
-  console.log(javascriptReddit + "reddit")
 });
 
 // var javascriptReddit = allHackerString.match(/javascript/g);
@@ -131,7 +121,7 @@ function returnMDN() {
         // console.log(html)
         // pass DOM to cheerio
         var $ = cheerio.load(html);
-        $('span.comhead').each(function(i, element){
+        $('p').each(function(i, element){
           // select previous element
           var a = $(this).prev();
           // parse the link title
@@ -143,13 +133,8 @@ function returnMDN() {
           writeStream.write(title + ',' + url + '\n');
 
           // data store in an object (for dumping to mongo)
-          var scrapedMDN = {
-            title: title
-          };
-          allMDN.push(scrapedMDN);
-          //console.log(scrapedData);
+          var scrapedMDN = title;
         });
-        console.log("\nDONE! mdn python\n")
       }
     });
   }
