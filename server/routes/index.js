@@ -17,6 +17,25 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/hell', function (req, res, next) {
+  //ajax request
+  var url = 'https://news.ycombinator.com';
+  var html = request(url, function (err, response, html) {
+      //parse htm with cheerio
+      var $ = cheerio.load(html)
+      // not JQUERY!!! this is cheerio made to look lke jquery because of above line...
+      var test = $('td.title a').first().text();
+      console.log(test);
+
+      res.send('hi');
+
+
+  });
+
+
+
+});
+
 
 
 module.exports = router;
