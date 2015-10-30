@@ -20,7 +20,7 @@ var javascriptHacker;
 // write headers to csv
 writeStream.write('Title,' + 'URL' + '\n');
 
-var redditR = getReddit();
+var reddit = getReddit();
 
 
 // perfrom request
